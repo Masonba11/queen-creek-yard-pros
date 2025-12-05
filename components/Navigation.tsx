@@ -18,22 +18,37 @@ export default function Navigation() {
   const [servicesOpen, setServicesOpen] = useState(false);
   const [serviceAreasOpen, setServiceAreasOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
+  const [mobileAreasOpen, setMobileAreasOpen] = useState(false);
   const servicesRef = useRef<HTMLDivElement>(null);
   const areasRef = useRef<HTMLDivElement>(null);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
+  const mobileMenuButtonRef = useRef<HTMLButtonElement>(null);
 
-  // Close dropdowns when clicking outside
+  // Close dropdowns when clicking outside (desktop only)
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent | TouchEvent) => {
       const target = event.target as Node;
+      
+      // Handle desktop dropdowns
       if (servicesRef.current && !servicesRef.current.contains(target)) {
         setServicesOpen(false);
       }
       if (areasRef.current && !areasRef.current.contains(target)) {
         setServiceAreasOpen(false);
       }
-      if (mobileMenuRef.current && !mobileMenuRef.current.contains(target)) {
+      
+      // Handle mobile menu - exclude the button itself
+      if (
+        mobileMenuOpen &&
+        mobileMenuRef.current &&
+        !mobileMenuRef.current.contains(target) &&
+        mobileMenuButtonRef.current &&
+        !mobileMenuButtonRef.current.contains(target)
+      ) {
         setMobileMenuOpen(false);
+        setMobileServicesOpen(false);
+        setMobileAreasOpen(false);
       }
     };
 
@@ -44,13 +59,19 @@ export default function Navigation() {
       document.removeEventListener("mousedown", handleClickOutside);
       document.removeEventListener("touchstart", handleClickOutside);
     };
-  }, []);
+  }, [mobileMenuOpen]);
 
   // Close mobile menu when route changes
   useEffect(() => {
-    setMobileMenuOpen(false);
-    setServicesOpen(false);
-    setServiceAreasOpen(false);
+    const handleRouteChange = () => {
+      setMobileMenuOpen(false);
+      setMobileServicesOpen(false);
+      setMobileAreasOpen(false);
+    };
+    
+    // Close on any navigation
+    window.addEventListener("popstate", handleRouteChange);
+    return () => window.removeEventListener("popstate", handleRouteChange);
   }, []);
 
   return (
@@ -214,9 +235,14 @@ export default function Navigation() {
 
           {/* Mobile Menu Button */}
           <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 text-gray-700 hover:text-gray-900 transition-colors"
+            ref={mobileMenuButtonRef}
+            onClick={(e) => {
+              e.stopPropagation();
+              setMobileMenuOpen(!mobileMenuOpen);
+            }}
+            className="md:hidden p-2 text-gray-700 hover:text-gray-900 transition-colors z-50 relative"
             aria-label="Toggle menu"
+            aria-expanded={mobileMenuOpen}
           >
             {mobileMenuOpen ? (
               <svg
@@ -254,13 +280,18 @@ export default function Navigation() {
         {mobileMenuOpen && (
           <div
             ref={mobileMenuRef}
-            className="md:hidden border-t border-gray-200/50 bg-white/95 backdrop-blur-md"
+            className="md:hidden border-t border-gray-200/50 bg-white/95 backdrop-blur-md fixed top-[73px] left-0 right-0 bottom-0 overflow-y-auto z-40"
+            onClick={(e) => e.stopPropagation()}
           >
             <div className="px-6 py-4 space-y-4">
               <Link
                 href="/"
-                onClick={() => setMobileMenuOpen(false)}
-                className="block py-2 text-gray-700 hover:text-gray-900 font-medium transition-colors"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  setMobileServicesOpen(false);
+                  setMobileAreasOpen(false);
+                }}
+                className="block py-3 text-gray-700 hover:text-gray-900 font-medium transition-colors border-b border-gray-100"
               >
                 Home
               </Link>
@@ -268,13 +299,16 @@ export default function Navigation() {
               {/* Mobile Services Dropdown */}
               <div>
                 <button
-                  onClick={() => setServicesOpen(!servicesOpen)}
-                  className="w-full flex items-center justify-between py-2 text-gray-700 hover:text-gray-900 font-medium transition-colors"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setMobileServicesOpen(!mobileServicesOpen);
+                  }}
+                  className="w-full flex items-center justify-between py-3 text-gray-700 hover:text-gray-900 font-medium transition-colors border-b border-gray-100"
                 >
                   <span>Services</span>
                   <svg
-                    className={`w-4 h-4 transition-transform duration-200 ${
-                      servicesOpen ? "rotate-180" : ""
+                    className={`w-5 h-5 transition-transform duration-200 ${
+                      mobileServicesOpen ? "rotate-180" : ""
                     }`}
                     fill="none"
                     stroke="currentColor"
@@ -288,17 +322,18 @@ export default function Navigation() {
                     />
                   </svg>
                 </button>
-                {servicesOpen && (
-                  <div className="pl-4 mt-2 space-y-2">
+                {mobileServicesOpen && (
+                  <div className="pl-4 mt-2 space-y-1 pb-2 border-b border-gray-100">
                     {services.map((service) => (
                       <Link
                         key={service.slug}
                         href={`/services/${service.slug}`}
                         onClick={() => {
-                          setServicesOpen(false);
+                          setMobileServicesOpen(false);
                           setMobileMenuOpen(false);
+                          setMobileAreasOpen(false);
                         }}
-                        className="block py-2 text-gray-600 hover:text-green-600 transition-colors"
+                        className="block py-2.5 text-gray-600 hover:text-green-600 transition-colors text-sm"
                       >
                         {capitalizeServiceName(service.name)}
                       </Link>
@@ -310,13 +345,16 @@ export default function Navigation() {
               {/* Mobile Service Areas Dropdown */}
               <div>
                 <button
-                  onClick={() => setServiceAreasOpen(!serviceAreasOpen)}
-                  className="w-full flex items-center justify-between py-2 text-gray-700 hover:text-gray-900 font-medium transition-colors"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setMobileAreasOpen(!mobileAreasOpen);
+                  }}
+                  className="w-full flex items-center justify-between py-3 text-gray-700 hover:text-gray-900 font-medium transition-colors border-b border-gray-100"
                 >
                   <span>Service Areas</span>
                   <svg
-                    className={`w-4 h-4 transition-transform duration-200 ${
-                      serviceAreasOpen ? "rotate-180" : ""
+                    className={`w-5 h-5 transition-transform duration-200 ${
+                      mobileAreasOpen ? "rotate-180" : ""
                     }`}
                     fill="none"
                     stroke="currentColor"
@@ -330,17 +368,18 @@ export default function Navigation() {
                     />
                   </svg>
                 </button>
-                {serviceAreasOpen && (
-                  <div className="pl-4 mt-2 space-y-2">
+                {mobileAreasOpen && (
+                  <div className="pl-4 mt-2 space-y-1 pb-2 border-b border-gray-100">
                     {serviceAreas.map((area) => (
                       <Link
                         key={area.slug}
                         href={`/service-areas/${area.slug}`}
                         onClick={() => {
-                          setServiceAreasOpen(false);
+                          setMobileAreasOpen(false);
                           setMobileMenuOpen(false);
+                          setMobileServicesOpen(false);
                         }}
-                        className="block py-2 text-gray-600 hover:text-green-600 transition-colors"
+                        className="block py-2.5 text-gray-600 hover:text-green-600 transition-colors text-sm"
                       >
                         {area.city}
                       </Link>
@@ -351,16 +390,24 @@ export default function Navigation() {
 
               <Link
                 href="/blog"
-                onClick={() => setMobileMenuOpen(false)}
-                className="block py-2 text-gray-700 hover:text-gray-900 font-medium transition-colors"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  setMobileServicesOpen(false);
+                  setMobileAreasOpen(false);
+                }}
+                className="block py-3 text-gray-700 hover:text-gray-900 font-medium transition-colors border-b border-gray-100"
               >
                 Blog
               </Link>
 
               <a
                 href="#quote"
-                onClick={() => setMobileMenuOpen(false)}
-                className="modern-button block text-center py-2.5 px-6"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  setMobileServicesOpen(false);
+                  setMobileAreasOpen(false);
+                }}
+                className="modern-button block text-center py-3 px-6 mt-4"
               >
                 <span>Get Quote</span>
               </a>
