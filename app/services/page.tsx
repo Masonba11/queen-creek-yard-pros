@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { services } from "@/data/services";
 import YardExpertsPartner from "@/components/YardExpertsPartner";
+import ContactForm from "@/components/ContactForm";
 
 // Helper function to properly capitalize service names
 function capitalizeServiceName(name: string): string {
@@ -74,6 +75,9 @@ export default function ServicesPage() {
 
       {/* Yard Experts Partner Section */}
       <YardExpertsPartner />
+
+      {/* Contact Form Section */}
+      <ContactForm />
     </div>
   );
 }

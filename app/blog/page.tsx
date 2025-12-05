@@ -1,4 +1,5 @@
 import Link from "next/link";
+import ContactForm from "@/components/ContactForm";
 
 export default function BlogPage() {
   // Placeholder blog posts - you can expand this later
@@ -61,12 +62,15 @@ export default function BlogPage() {
         ))}
       </div>
 
-      <div className="text-center">
+      <div className="text-center mb-16">
         <p className="text-gray-600 mb-4">
           More blog posts coming soon! Check back regularly for the latest
           landscaping tips and trends.
         </p>
       </div>
+
+      {/* Contact Form Section */}
+      <ContactForm />
     </div>
   );
 }
