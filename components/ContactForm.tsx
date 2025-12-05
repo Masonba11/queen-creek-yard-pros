@@ -29,16 +29,15 @@ export default function ContactForm() {
   const [areaSuggestions, setAreaSuggestions] = useState<string[]>([]);
   const [showServiceSuggestions, setShowServiceSuggestions] = useState(false);
   const [showAreaSuggestions, setShowAreaSuggestions] = useState(false);
-  const serviceInputRef = useRef<HTMLInputElement>(null);
-  const areaInputRef = useRef<HTMLInputElement>(null);
+  const serviceInputRef = useRef<HTMLDivElement>(null);
+  const areaInputRef = useRef<HTMLDivElement>(null);
 
   const serviceNames = services.map((s) => capitalizeServiceName(s.name));
   const areaNames = serviceAreas.map((a) => a.city);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
+    
     setFormData((prev) => ({
       ...prev,
       [name]: value,
@@ -54,6 +53,7 @@ export default function ContactForm() {
         setShowServiceSuggestions(true);
       } else {
         setShowServiceSuggestions(false);
+        setServiceSuggestions([]);
       }
     }
 
@@ -67,6 +67,7 @@ export default function ContactForm() {
         setShowAreaSuggestions(true);
       } else {
         setShowAreaSuggestions(false);
+        setAreaSuggestions([]);
       }
     }
   };
@@ -74,11 +75,13 @@ export default function ContactForm() {
   const selectService = (service: string) => {
     setFormData((prev) => ({ ...prev, service }));
     setShowServiceSuggestions(false);
+    setServiceSuggestions([]);
   };
 
   const selectArea = (area: string) => {
     setFormData((prev) => ({ ...prev, serviceArea: area }));
     setShowAreaSuggestions(false);
+    setAreaSuggestions([]);
   };
 
   // Close suggestions when clicking outside
@@ -196,7 +199,7 @@ export default function ContactForm() {
             </button>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6" noValidate>
             <div className="grid md:grid-cols-2 gap-6">
               <div>
                 <label
@@ -211,8 +214,8 @@ export default function ContactForm() {
                   name="name"
                   required
                   value={formData.name}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 outline-none"
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 outline-none bg-white"
                   placeholder="John Doe"
                 />
               </div>
@@ -230,8 +233,8 @@ export default function ContactForm() {
                   name="email"
                   required
                   value={formData.email}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 outline-none"
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 outline-none bg-white"
                   placeholder="john@example.com"
                 />
               </div>
@@ -250,8 +253,8 @@ export default function ContactForm() {
                   id="phone"
                   name="phone"
                   value={formData.phone}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 outline-none"
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 outline-none bg-white"
                   placeholder="(480) 555-1234"
                 />
               </div>
@@ -268,7 +271,7 @@ export default function ContactForm() {
                   id="serviceArea"
                   name="serviceArea"
                   value={formData.serviceArea}
-                  onChange={handleChange}
+                  onChange={handleInputChange}
                   onFocus={() => {
                     if (formData.serviceArea.length > 0) {
                       const filtered = areaNames.filter((area) =>
@@ -278,7 +281,7 @@ export default function ContactForm() {
                       setShowAreaSuggestions(true);
                     }
                   }}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 outline-none"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 outline-none bg-white"
                   placeholder="Type your city (e.g., Queen Creek, Mesa...)"
                   autoComplete="off"
                 />
@@ -311,7 +314,7 @@ export default function ContactForm() {
                 id="service"
                 name="service"
                 value={formData.service}
-                onChange={handleChange}
+                onChange={handleInputChange}
                 onFocus={() => {
                   if (formData.service.length > 0) {
                     const filtered = serviceNames.filter((service) =>
@@ -321,7 +324,7 @@ export default function ContactForm() {
                     setShowServiceSuggestions(true);
                   }
                 }}
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 outline-none"
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 outline-none bg-white"
                 placeholder="Type a service (e.g., Lawn Care, Irrigation...)"
                 autoComplete="off"
               />
@@ -354,8 +357,8 @@ export default function ContactForm() {
                 required
                 rows={5}
                 value={formData.message}
-                onChange={handleChange}
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 resize-none outline-none"
+                onChange={handleInputChange}
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 resize-none outline-none bg-white"
                 placeholder="Tell us about your project, timeline, and any specific requirements..."
               />
             </div>
