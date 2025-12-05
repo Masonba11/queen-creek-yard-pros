@@ -13,6 +13,8 @@ function capitalizeServiceName(name: string): string {
     .join(" ");
 }
 
+type FormStatus = "idle" | "loading" | "error";
+
 export default function ContactForm() {
   const router = useRouter();
   const [name, setName] = useState("");
@@ -21,7 +23,7 @@ export default function ContactForm() {
   const [service, setService] = useState("");
   const [serviceArea, setServiceArea] = useState("");
   const [message, setMessage] = useState("");
-  const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
+  const [status, setStatus] = useState<FormStatus>("idle");
   const [errorMessage, setErrorMessage] = useState("");
   
   // Autocomplete states
@@ -346,11 +348,11 @@ export default function ContactForm() {
 
             <button
               type="submit"
-              disabled={status === ("loading" as const)}
+              disabled={status === "loading"}
               className="modern-button w-full disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <span>
-                {status === ("loading" as const) ? "Submitting..." : "Get Your Free Quote"}
+                {status === "loading" ? "Submitting..." : "Get Your Free Quote"}
               </span>
             </button>
 
