@@ -26,7 +26,7 @@ export default function BlogPage() {
       excerpt:
         "Essential tips for finding and selecting the perfect landscaping contractor for your needs.",
       date: "March 5, 2024",
-      slug: "choosing-right-contractor",
+      slug: "choosing-right-landscaping-contractor",
     },
   ];
 
