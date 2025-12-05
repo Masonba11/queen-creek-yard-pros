@@ -186,7 +186,7 @@ export default function ContactForm() {
             </button>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="space-y-6" noValidate>
+          <form onSubmit={handleSubmit} className="space-y-6 relative z-10" noValidate style={{ pointerEvents: "auto" }}>
             <div className="grid md:grid-cols-2 gap-6">
               <div>
                 <label
@@ -202,8 +202,9 @@ export default function ContactForm() {
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 outline-none bg-white text-gray-900"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 outline-none bg-white text-gray-900 relative z-10"
                   placeholder="John Doe"
+                  style={{ pointerEvents: "auto" }}
                 />
               </div>
 
@@ -221,8 +222,9 @@ export default function ContactForm() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 outline-none bg-white text-gray-900"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 outline-none bg-white text-gray-900 relative z-10"
                   placeholder="john@example.com"
+                  style={{ pointerEvents: "auto" }}
                 />
               </div>
             </div>
@@ -241,8 +243,9 @@ export default function ContactForm() {
                   name="phone"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 outline-none bg-white text-gray-900"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 outline-none bg-white text-gray-900 relative z-10"
                   placeholder="(480) 555-1234"
+                  style={{ pointerEvents: "auto" }}
                 />
               </div>
 
@@ -345,8 +348,9 @@ export default function ContactForm() {
                 rows={5}
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 resize-none outline-none bg-white text-gray-900"
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 resize-none outline-none bg-white text-gray-900 relative z-10"
                 placeholder="Tell us about your project, timeline, and any specific requirements..."
+                style={{ pointerEvents: "auto" }}
               />
             </div>
 
