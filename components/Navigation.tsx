@@ -75,7 +75,7 @@ export default function Navigation() {
   }, []);
 
   return (
-    <nav className="sticky top-0 z-50 glass border-b border-gray-200/50 backdrop-blur-xl">
+    <nav className="sticky top-0 z-50 glass border-b border-gray-200/50 backdrop-blur-xl relative">
       <div className="max-w-7xl mx-auto px-6 pt-0 pb-0">
         <div className="flex items-center justify-between">
           <Link
@@ -280,7 +280,7 @@ export default function Navigation() {
         {mobileMenuOpen && (
           <div
             ref={mobileMenuRef}
-            className="md:hidden border-t border-gray-200/50 bg-white/95 backdrop-blur-md fixed top-[73px] left-0 right-0 bottom-0 overflow-y-auto z-40"
+            className="md:hidden border-t border-gray-200/50 bg-white absolute left-0 right-0 top-full shadow-lg z-50 max-h-[calc(100vh-80px)] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="px-6 py-4 space-y-4">
