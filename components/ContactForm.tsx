@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { services } from "@/data/services";
 import { serviceAreas } from "@/data/serviceAreas";
 
@@ -13,6 +14,7 @@ function capitalizeServiceName(name: string): string {
 }
 
 export default function ContactForm() {
+  const router = useRouter();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -122,15 +124,8 @@ export default function ContactForm() {
       const result = await response.json();
 
       if (result.success) {
-        setStatus("success");
-        setName("");
-        setEmail("");
-        setPhone("");
-        setService("");
-        setServiceArea("");
-        setMessage("");
-        setShowServiceSuggestions(false);
-        setShowAreaSuggestions(false);
+        // Redirect to thank you page
+        router.push("/thank-you");
       } else {
         setStatus("error");
         setErrorMessage(result.message || "Something went wrong. Please try again.");
@@ -154,9 +149,9 @@ export default function ContactForm() {
           </p>
         </div>
 
-        {status === "success" ? (
+        {status === "loading" ? (
           <div className="text-center py-8">
-            <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
+            <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4 animate-spin">
               <svg
                 className="w-8 h-8 text-green-600"
                 fill="none"
@@ -167,23 +162,16 @@ export default function ContactForm() {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth={2}
-                  d="M5 13l4 4L19 7"
+                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
                 />
               </svg>
             </div>
             <h3 className="text-2xl font-bold text-gray-900 mb-2">
-              Thank You!
+              Submitting...
             </h3>
-            <p className="text-gray-600 mb-4">
-              Your request has been submitted successfully. We'll be in touch
-              shortly to connect you with qualified contractors.
+            <p className="text-gray-600">
+              Please wait while we process your request.
             </p>
-            <button
-              onClick={() => setStatus("idle")}
-              className="modern-button"
-            >
-              <span>Submit Another Request</span>
-            </button>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-6 relative z-20" noValidate style={{ pointerEvents: "auto" }}>
