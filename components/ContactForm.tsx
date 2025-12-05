@@ -21,7 +21,7 @@ export default function ContactForm() {
   const [service, setService] = useState("");
   const [serviceArea, setServiceArea] = useState("");
   const [message, setMessage] = useState("");
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
   
   // Autocomplete states
