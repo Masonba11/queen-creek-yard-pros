@@ -14,6 +14,22 @@ function capitalizeServiceName(name: string): string {
     .join(" ");
 }
 
+// Helper function to extract service name without location suffix
+function getServiceDisplayName(name: string): string {
+  // Remove common location suffixes
+  let displayName = name
+    .replace(/\s+queen\s+creek\s+az$/i, "")
+    .replace(/\s+queen\s+creek$/i, "")
+    .replace(/\s+az$/i, "")
+    .trim();
+  
+  // Handle cases where "queen creek" is at the beginning
+  displayName = displayName.replace(/^queen\s+creek\s+/i, "");
+  
+  // Capitalize the result
+  return capitalizeServiceName(displayName);
+}
+
 export default function Navigation() {
   const [servicesOpen, setServicesOpen] = useState(false);
   const [serviceAreasOpen, setServiceAreasOpen] = useState(false);
@@ -153,7 +169,7 @@ export default function Navigation() {
                           }}
                           className="block px-4 py-3 text-gray-700 hover:bg-green-50 hover:text-green-600 transition-colors duration-200"
                         >
-                          {capitalizeServiceName(service.name)}
+                          {getServiceDisplayName(service.name)}
                         </Link>
                       ))}
                     </div>
@@ -335,7 +351,7 @@ export default function Navigation() {
                         }}
                         className="block py-2.5 text-gray-600 hover:text-green-600 transition-colors text-sm"
                       >
-                        {capitalizeServiceName(service.name)}
+                        {getServiceDisplayName(service.name)}
                       </Link>
                     ))}
                   </div>
