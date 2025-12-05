@@ -22,10 +22,10 @@ function getServiceDisplayName(name: string): string {
     .replace(/\s+queen\s+creek$/i, "")
     .replace(/\s+az$/i, "")
     .trim();
-  
+
   // Handle cases where "queen creek" is at the beginning
   displayName = displayName.replace(/^queen\s+creek\s+/i, "");
-  
+
   // Capitalize the result
   return capitalizeServiceName(displayName);
 }
@@ -45,7 +45,7 @@ export default function Navigation() {
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent | TouchEvent) => {
       const target = event.target as Node;
-      
+
       // Handle desktop dropdowns
       if (servicesRef.current && !servicesRef.current.contains(target)) {
         setServicesOpen(false);
@@ -53,7 +53,7 @@ export default function Navigation() {
       if (areasRef.current && !areasRef.current.contains(target)) {
         setServiceAreasOpen(false);
       }
-      
+
       // Handle mobile menu - exclude the button itself
       if (
         mobileMenuOpen &&
@@ -84,7 +84,7 @@ export default function Navigation() {
       setMobileServicesOpen(false);
       setMobileAreasOpen(false);
     };
-    
+
     // Close on any navigation
     window.addEventListener("popstate", handleRouteChange);
     return () => window.removeEventListener("popstate", handleRouteChange);

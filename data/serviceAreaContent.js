@@ -80,20 +80,4 @@ export const serviceAreaContent = {
         "Serving Queen Creek neighborhoods including Encanterra, The Preserve, and communities throughout the area, we connect you with local contractors who understand the community's values, architectural styles, and what makes properties here special. We're committed to making Queen Creek more beautiful, one property at a time, by connecting you with the right contractors.",
     },
   },
-  tempe: {
-    name: "Tempe",
-    title: "Professional Landscaping Services in Tempe, AZ",
-    description:
-      "Expert landscaping services in Tempe, Arizona. Transform your outdoor space with professional lawn care, irrigation, hardscaping, and landscape design.",
-    content: {
-      intro:
-        "Tempe, Arizona, is a vibrant city known for its mix of urban energy and desert beauty. Queen Creek Yard Pros connects Tempe homeowners and businesses with qualified, licensed landscaping contractors who understand Tempe's unique environment and the needs of this dynamic community. Our network of Tempe landscaping contractors brings extensive experience working throughout Tempe's diverse neighborhoods, from historic districts to modern developments. These professionals understand Tempe's specific climate conditions, water conservation requirements, and the best practices for creating landscapes that thrive in Arizona's desert environment.",
-      whyChoose:
-        "Our Tempe contractor network is tailored to meet the unique needs of this vibrant community. We match you with Tempe landscaping contractors who understand that Tempe homeowners value both aesthetic appeal and practical functionality. These contractors bring professional expertise combined with local knowledge of Tempe's specific conditions. Our Tempe contractors understand the area's architectural diversity and are familiar with HOA requirements that vary between neighborhoods. They design and install landscaping that enhances your property's value while providing years of enjoyment, using premium materials and proven installation techniques.",
-      services:
-        "In Tempe, we connect you with contractors offering comprehensive landscaping services including lawn care and maintenance programs tailored to Tempe's climate, efficient irrigation systems designed for water conservation, hardscaping with pavers and decorative stone, custom landscape design and installation, professional tree services, artificial grass installation, landscape lighting, and seasonal yard cleanup and maintenance. Our Tempe contractors are equipped to handle projects of any size, from small residential yards to large commercial properties.",
-      local:
-        "Serving Tempe neighborhoods throughout the city, we connect you with contractors who understand the unique character of each area. Our Tempe contractors are familiar with local climate patterns, soil conditions, and the best plant selections for this region, ensuring your landscape thrives year-round. They understand the importance of working within each neighborhood's specific guidelines and requirements.",
-    },
-  },
 };

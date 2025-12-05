@@ -25,7 +25,6 @@ export default function GlobalSchema() {
       "Mesa, AZ",
       "Chandler, AZ",
       "San Tan Valley, AZ",
-      "Tempe, AZ",
     ],
   };
 
