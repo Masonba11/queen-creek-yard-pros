@@ -81,10 +81,10 @@ export default function ServiceAreaPage({
           </div>
           <div className="relative z-10 h-full flex flex-col justify-center px-6 md:px-12 max-w-7xl mx-auto">
             <div className="max-w-4xl">
-              <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
+              <h1 className="text-3xl md:text-7xl font-bold text-white mb-6 leading-tight">
                 {areaData.title}
               </h1>
-              <p className="text-xl md:text-2xl text-white/90 leading-relaxed mb-8 max-w-3xl">
+              <p className="text-base md:text-2xl text-white/90 leading-relaxed mb-8 max-w-3xl">
                 {areaData.description}
               </p>
               <a href="#quote" className="modern-button inline-block">
