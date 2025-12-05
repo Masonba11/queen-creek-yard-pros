@@ -346,11 +346,11 @@ export default function ContactForm() {
 
             <button
               type="submit"
-              disabled={status === "loading"}
+              disabled={status === ("loading" as const)}
               className="modern-button w-full disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <span>
-                {status === "loading" ? "Submitting..." : "Get Your Free Quote"}
+                {status === ("loading" as const) ? "Submitting..." : "Get Your Free Quote"}
               </span>
             </button>
 
