@@ -143,7 +143,7 @@ export default function ContactForm() {
 
   return (
     <div id="quote" className="mb-20 animate-fade-in scroll-mt-20">
-      <div className="modern-card p-10 max-w-3xl mx-auto">
+      <div className="modern-card p-10 max-w-3xl mx-auto relative" style={{ pointerEvents: "auto" }}>
         <div className="text-center mb-8">
           <h2 className="text-4xl font-bold text-gray-900 mb-4">
             Get Your Free <span className="gradient-text">Quote</span>
