@@ -1,6 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
+import { services } from "@/data/services";
+import { serviceAreas } from "@/data/serviceAreas";
+
+// Helper function to capitalize service names
+function capitalizeServiceName(name: string): string {
+  return name
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({
@@ -8,23 +18,89 @@ export default function ContactForm() {
     email: "",
     phone: "",
     service: "",
+    serviceArea: "",
     message: "",
   });
-  const [status, setStatus] = useState<
-    "idle" | "loading" | "success" | "error"
-  >("idle");
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
+  
+  // Autocomplete states
+  const [serviceSuggestions, setServiceSuggestions] = useState<string[]>([]);
+  const [areaSuggestions, setAreaSuggestions] = useState<string[]>([]);
+  const [showServiceSuggestions, setShowServiceSuggestions] = useState(false);
+  const [showAreaSuggestions, setShowAreaSuggestions] = useState(false);
+  const serviceInputRef = useRef<HTMLInputElement>(null);
+  const areaInputRef = useRef<HTMLInputElement>(null);
+
+  const serviceNames = services.map((s) => capitalizeServiceName(s.name));
+  const areaNames = serviceAreas.map((a) => a.city);
 
   const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+
+    // Handle service autocomplete
+    if (name === "service") {
+      if (value.length > 0) {
+        const filtered = serviceNames.filter((service) =>
+          service.toLowerCase().includes(value.toLowerCase())
+        );
+        setServiceSuggestions(filtered.slice(0, 5));
+        setShowServiceSuggestions(true);
+      } else {
+        setShowServiceSuggestions(false);
+      }
+    }
+
+    // Handle service area autocomplete
+    if (name === "serviceArea") {
+      if (value.length > 0) {
+        const filtered = areaNames.filter((area) =>
+          area.toLowerCase().includes(value.toLowerCase())
+        );
+        setAreaSuggestions(filtered.slice(0, 5));
+        setShowAreaSuggestions(true);
+      } else {
+        setShowAreaSuggestions(false);
+      }
+    }
   };
+
+  const selectService = (service: string) => {
+    setFormData((prev) => ({ ...prev, service }));
+    setShowServiceSuggestions(false);
+  };
+
+  const selectArea = (area: string) => {
+    setFormData((prev) => ({ ...prev, serviceArea: area }));
+    setShowAreaSuggestions(false);
+  };
+
+  // Close suggestions when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        serviceInputRef.current &&
+        !serviceInputRef.current.contains(event.target as Node)
+      ) {
+        setShowServiceSuggestions(false);
+      }
+      if (
+        areaInputRef.current &&
+        !areaInputRef.current.contains(event.target as Node)
+      ) {
+        setShowAreaSuggestions(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,6 +121,7 @@ export default function ContactForm() {
           email: formData.email,
           phone: formData.phone,
           service: formData.service,
+          service_area: formData.serviceArea,
           message: formData.message,
           from: formData.email,
         }),
@@ -59,19 +136,18 @@ export default function ContactForm() {
           email: "",
           phone: "",
           service: "",
+          serviceArea: "",
           message: "",
         });
+        setShowServiceSuggestions(false);
+        setShowAreaSuggestions(false);
       } else {
         setStatus("error");
-        setErrorMessage(
-          result.message || "Something went wrong. Please try again."
-        );
+        setErrorMessage(result.message || "Something went wrong. Please try again.");
       }
     } catch (error) {
       setStatus("error");
-      setErrorMessage(
-        "Network error. Please check your connection and try again."
-      );
+      setErrorMessage("Network error. Please check your connection and try again.");
     }
   };
 
@@ -112,7 +188,10 @@ export default function ContactForm() {
               Your request has been submitted successfully. We'll be in touch
               shortly to connect you with qualified contractors.
             </p>
-            <button onClick={() => setStatus("idle")} className="modern-button">
+            <button
+              onClick={() => setStatus("idle")}
+              className="modern-button"
+            >
               <span>Submit Another Request</span>
             </button>
           </div>
@@ -133,7 +212,7 @@ export default function ContactForm() {
                   required
                   value={formData.name}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 outline-none"
                   placeholder="John Doe"
                 />
               </div>
@@ -152,7 +231,7 @@ export default function ContactForm() {
                   required
                   value={formData.email}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 outline-none"
                   placeholder="john@example.com"
                 />
               </div>
@@ -172,40 +251,94 @@ export default function ContactForm() {
                   name="phone"
                   value={formData.phone}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 outline-none"
                   placeholder="(480) 555-1234"
                 />
               </div>
 
-              <div>
+              <div className="relative" ref={areaInputRef}>
                 <label
-                  htmlFor="service"
+                  htmlFor="serviceArea"
                   className="block text-sm font-medium text-gray-700 mb-2"
                 >
-                  Service Needed
+                  Service Area
                 </label>
-                <select
-                  id="service"
-                  name="service"
-                  value={formData.service}
+                <input
+                  type="text"
+                  id="serviceArea"
+                  name="serviceArea"
+                  value={formData.serviceArea}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
-                >
-                  <option value="">Select a service...</option>
-                  <option value="Lawn Care">Lawn Care</option>
-                  <option value="Irrigation">Irrigation</option>
-                  <option value="Hardscaping">Hardscaping</option>
-                  <option value="Landscape Design">Landscape Design</option>
-                  <option value="Artificial Turf">Artificial Turf</option>
-                  <option value="Tree Trimming">Tree Trimming</option>
-                  <option value="Yard Cleanup">Yard Cleanup</option>
-                  <option value="Weed Control">Weed Control</option>
-                  <option value="Landscape Lighting">Landscape Lighting</option>
-                  <option value="Yard Maintenance">Yard Maintenance</option>
-                  <option value="Landscape Rock">Landscape Rock</option>
-                  <option value="Other">Other</option>
-                </select>
+                  onFocus={() => {
+                    if (formData.serviceArea.length > 0) {
+                      const filtered = areaNames.filter((area) =>
+                        area.toLowerCase().includes(formData.serviceArea.toLowerCase())
+                      );
+                      setAreaSuggestions(filtered.slice(0, 5));
+                      setShowAreaSuggestions(true);
+                    }
+                  }}
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 outline-none"
+                  placeholder="Type your city (e.g., Queen Creek, Mesa...)"
+                  autoComplete="off"
+                />
+                {showAreaSuggestions && areaSuggestions.length > 0 && (
+                  <div className="absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-48 overflow-y-auto">
+                    {areaSuggestions.map((area, index) => (
+                      <button
+                        key={index}
+                        type="button"
+                        onClick={() => selectArea(area)}
+                        className="w-full text-left px-4 py-2 hover:bg-green-50 transition-colors first:rounded-t-lg last:rounded-b-lg"
+                      >
+                        {area}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
+            </div>
+
+            <div className="relative" ref={serviceInputRef}>
+              <label
+                htmlFor="service"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Service Needed
+              </label>
+              <input
+                type="text"
+                id="service"
+                name="service"
+                value={formData.service}
+                onChange={handleChange}
+                onFocus={() => {
+                  if (formData.service.length > 0) {
+                    const filtered = serviceNames.filter((service) =>
+                      service.toLowerCase().includes(formData.service.toLowerCase())
+                    );
+                    setServiceSuggestions(filtered.slice(0, 5));
+                    setShowServiceSuggestions(true);
+                  }
+                }}
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 outline-none"
+                placeholder="Type a service (e.g., Lawn Care, Irrigation...)"
+                autoComplete="off"
+              />
+              {showServiceSuggestions && serviceSuggestions.length > 0 && (
+                <div className="absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-48 overflow-y-auto">
+                  {serviceSuggestions.map((service, index) => (
+                    <button
+                      key={index}
+                      type="button"
+                      onClick={() => selectService(service)}
+                      className="w-full text-left px-4 py-2 hover:bg-green-50 transition-colors first:rounded-t-lg last:rounded-b-lg"
+                    >
+                      {service}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
 
             <div>
@@ -222,7 +355,7 @@ export default function ContactForm() {
                 rows={5}
                 value={formData.message}
                 onChange={handleChange}
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 resize-none"
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 resize-none outline-none"
                 placeholder="Tell us about your project, timeline, and any specific requirements..."
               />
             </div>
