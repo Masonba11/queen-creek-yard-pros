@@ -71,6 +71,8 @@
 .modern-card::before {
   content: "";
   @apply absolute inset-0 bg-gradient-to-br from-green-50/0 to-emerald-50/0 transition-all duration-300;
+  pointer-events: none;
+  z-index: 0;
 }
 
 .modern-card:hover::before {
