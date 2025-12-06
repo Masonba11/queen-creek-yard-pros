@@ -244,9 +244,14 @@ export default function Navigation() {
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-green-600 transition-all duration-300 group-hover:w-full"></span>
             </Link>
 
-            <a href="#quote" className="modern-button text-sm py-2.5 px-6">
-              <span>Get Quote</span>
-            </a>
+            <div className="flex items-center gap-3">
+              <a href="#quote" className="modern-button text-sm py-2.5 px-6">
+                <span>Get Quote</span>
+              </a>
+              <a href="tel:480-987-6110" className="modern-button text-sm py-2.5 px-6 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800">
+                <span>Call: 480-987-6110</span>
+              </a>
+            </div>
           </div>
 
           {/* Mobile Menu Button */}
@@ -416,17 +421,30 @@ export default function Navigation() {
                 Blog
               </Link>
 
-              <a
-                href="#quote"
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  setMobileServicesOpen(false);
-                  setMobileAreasOpen(false);
-                }}
-                className="modern-button block text-center py-3 px-6 mt-4"
-              >
-                <span>Get Quote</span>
-              </a>
+              <div className="space-y-3 mt-4">
+                <a
+                  href="#quote"
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    setMobileServicesOpen(false);
+                    setMobileAreasOpen(false);
+                  }}
+                  className="modern-button block text-center py-3 px-6"
+                >
+                  <span>Get Quote</span>
+                </a>
+                <a
+                  href="tel:480-987-6110"
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    setMobileServicesOpen(false);
+                    setMobileAreasOpen(false);
+                  }}
+                  className="modern-button block text-center py-3 px-6 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800"
+                >
+                  <span>Call: 480-987-6110</span>
+                </a>
+              </div>
             </div>
           </div>
         )}

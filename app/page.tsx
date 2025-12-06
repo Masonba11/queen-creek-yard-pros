@@ -73,9 +73,17 @@ export default function HomePage() {
               your area. We connect homeowners with trusted professionals for
               all your landscaping needs.
             </p>
-            <a href="#quote" className="modern-button inline-block">
-              <span>Get Your Free Quote</span>
-            </a>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <a href="#quote" className="modern-button inline-block">
+                <span>Get Your Free Quote</span>
+              </a>
+              <a
+                href="tel:480-987-6110"
+                className="modern-button inline-block bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800"
+              >
+                <span>Call Us Now: 480-987-6110</span>
+              </a>
+            </div>
           </div>
         </div>
       </div>

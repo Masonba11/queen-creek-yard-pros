@@ -115,9 +115,17 @@ export default function ServicePageTemplate({
               <p className="text-base md:text-2xl text-white/90 leading-relaxed mb-8 max-w-3xl">
                 {description}
               </p>
-              <a href="#quote" className="modern-button inline-block">
-                <span>Get Your Free Quote</span>
-              </a>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <a href="#quote" className="modern-button inline-block">
+                  <span>Get Your Free Quote</span>
+                </a>
+                <a
+                  href="tel:480-987-6110"
+                  className="modern-button inline-block bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800"
+                >
+                  <span>Call Us Now: 480-987-6110</span>
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -129,9 +137,17 @@ export default function ServicePageTemplate({
           <p className="text-xl text-gray-700 leading-relaxed mb-8 max-w-3xl">
             {description}
           </p>
-          <a href="#quote" className="modern-button">
-            <span>Get Your Free Quote</span>
-          </a>
+          <div className="flex flex-col sm:flex-row gap-4">
+            <a href="#quote" className="modern-button">
+              <span>Get Your Free Quote</span>
+            </a>
+            <a
+              href="tel:480-987-6110"
+              className="modern-button bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800"
+            >
+              <span>Call Us Now: 480-987-6110</span>
+            </a>
+          </div>
         </div>
       )}
 

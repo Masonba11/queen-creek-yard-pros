@@ -120,6 +120,14 @@ export default function Footer() {
                   Get Quote
                 </a>
               </li>
+              <li>
+                <a
+                  href="tel:480-987-6110"
+                  className="text-sm hover:text-blue-400 transition-colors duration-200"
+                >
+                  Call Us: 480-987-6110
+                </a>
+              </li>
             </ul>
           </div>
         </div>

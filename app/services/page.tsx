@@ -67,9 +67,17 @@ export default function ServicesPage() {
             Get a free quote today and see how we can bring your landscaping
             vision to life.
           </p>
-          <a href="#quote" className="modern-button">
-            <span>Get Your Free Quote</span>
-          </a>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="#quote" className="modern-button">
+              <span>Get Your Free Quote</span>
+            </a>
+            <a
+              href="tel:480-987-6110"
+              className="modern-button bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800"
+            >
+              <span>Call Us Now: 480-987-6110</span>
+            </a>
+          </div>
         </div>
       </div>
 
