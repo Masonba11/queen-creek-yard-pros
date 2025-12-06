@@ -66,7 +66,7 @@ export default function HomePage() {
         <div className="relative z-10 h-full flex flex-col justify-center px-6 md:px-12 max-w-7xl mx-auto">
           <div className="max-w-3xl">
             <h1 className="text-3xl md:text-6xl font-bold text-white mb-6 text-balance leading-tight">
-              Connect with Top Landscaping Contractors in Arizona
+              Landscapers, Queen Creek AZ
             </h1>
             <p className="text-base md:text-xl text-white/90 leading-relaxed mb-8 text-balance">
               Get matched with qualified, licensed landscaping contractors in
